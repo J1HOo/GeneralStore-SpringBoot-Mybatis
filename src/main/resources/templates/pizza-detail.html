@@ -11,11 +11,16 @@
 <div class="container">
     <h1>피자 상세보기</h1>
     <div id="pizza-detail">
+        <img src="/images/default-pizza.png" class="pizza-img" alt="pizza-image" id="pizza-image">
         <p><strong>이름 : </strong> <span id="pizza-name"></span> </p>
         <p><strong>가격 : </strong> <span id="pizza-price"></span> </p>
         <p><strong>설명 : </strong> <span id="pizza-description"></span> </p>
     </div>
-    <a href="/pizzas">목록</a>
+    <div class="buttons">
+        <a id="edit-button" class="btn">수정</a>
+        <button id="delete-button" class="btn">삭제</button>
+        <a href="/pizzas">목록</a>
+    </div>
 </div>
 </body>
 
@@ -23,6 +28,24 @@
     $(document).ready(function(){
         const Params = new URLSearchParams(window.location.search);
         const id = Params.get('id');
+
+        $("#edit-button").attr("href", `/pizzas/edit?id=${id}`);
+
+        $('#delete-button').click(function(){
+            if (confirm("정말 삭제하시겠습니까?")) {
+                $.ajax({
+                    url: '/api/pizzas/' + id,
+                    method: 'delete',
+                    success: function (data) {
+                        alert("메뉴가 삭제되었습니다.");
+                        window.location.href = "/pizzas";
+                    },
+                    error: function (data) {
+                        alert("메뉴를 삭제할 수 없습니다.");
+                    }
+                })
+            }
+        });
 
         $.ajax({
             // url: "/api/pizzas/" + id,
