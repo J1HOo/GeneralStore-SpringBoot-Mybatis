@@ -18,7 +18,7 @@ public class WebConfig  implements WebMvcConfigurer {
         registry.addResourceHandler("/images/**")
                 .addResourceLocations("classpath:/static/images/");
 
-        registry.addResourceHandler("/uploaded/**").
-                addResourceLocations("file:"+uploadPath+"/");
+        registry.addResourceHandler("/pizza-image/**")
+            .addResourceLocations("file:/Users/parkjiho/Workspace/pizza-image-path/");
     }
 }

@@ -28,7 +28,8 @@ public class PizzaServiceImpl implements PizzaService {
     @Override
     public int insertPizza(Pizza pizza) {
         // 피자메뉴에 피자를 추가할 경우 이미지를 저장할 경로를 설정하여 추가
-        return 0;
+
+        return pizzaMapper.insertPizza(pizza);
     }
 
     @Override
@@ -37,6 +38,8 @@ public class PizzaServiceImpl implements PizzaService {
         // 기존에 저장된 이미지 삭제 또는 보존
         return pizzaMapper.updatePizza(pizza);
     }
+
+
 
     @Override
     public int deletePizza(int id) {

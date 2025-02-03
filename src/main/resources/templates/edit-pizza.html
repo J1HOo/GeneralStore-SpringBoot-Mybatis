@@ -3,11 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Title</title>
+    <title>피자 수정</title>
     <link rel="icon" href="/favicon.ico">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
+<div class="container">
+    <h1>피자 수정</h1>
+    <form id="edit-pizza-form" enctype="multipart/form-data">
+        <p>
+            <strong>이미지 : </strong>
+            <input type="file" id="image" name="image" accept="image/*">
+            <!-- (선택) 이미지 미리보기 -->
+            <img id="preview-img" src="" alt="이미지 미리보기"
+                 style="max-width: 150px; display: none;">
+        </p>
+        <p>
+            <strong>이름 : </strong>
+            <input type="text" id="pizza-name" name="name">
+        </p>
+        <p>
+            <strong>가격 : </strong>
+            <input type="number" id="pizza-price" name="price">
+        </p>
+        <p>
+            <strong>설명 : </strong>
+            <input type="text" id="pizza-description" name="description">
+        </p>
+        <button type="submit">수정</button>
+    </form>
+</div>
 
+<script>
+    $(document).ready(function(){
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        // 1) 기존 피자 정보 로드
+        $.ajax({
+            url: "/api/pizzas/" + id,
+            method: "GET",
+            success: function(pizza) {
+                // 기존 이미지 미리보기 (로컬 경로/S3 경로 등)
+                if (pizza.imagePath) {
+                    $('#preview-img').attr('src', pizza.imagePath).show();
+                }
+                $('#pizza-name').val(pizza.name);
+                $('#pizza-price').val(pizza.price);
+                $('#pizza-description').val(pizza.description);
+            },
+            error: function(xhr, status, error) {
+                alert("피자 정보를 불러올 수 없습니다.");
+                console.error("GET /api/pizzas/{id} error:", xhr, status, error);
+                // 불러오기 실패 시 목록으로 이동
+                window.location.href = "/pizzas";
+            }
+        });
+
+        // 2) 수정 폼 전송 시 PUT 요청
+        $('#edit-pizza-form').submit(function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            $.ajax({
+                url: "/api/pizzas/" + id,
+                type: "PUT",
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function() {
+                    alert("피자가 수정되었습니다.");
+                    window.location.href = "/pizzas";
+                },
+                error: function(xhr, status, error) {
+                    alert("피자를 수정하는 데 실패했습니다.");
+                    console.error("PUT /api/pizzas/{id} error:", xhr, status, error, xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

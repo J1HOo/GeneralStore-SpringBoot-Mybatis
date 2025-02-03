@@ -12,11 +12,12 @@
     </select>
 
     <insert id="insertPizza" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO PizzaMenu (name, price, description) VALUES (#{name}, #{price}, #{description})
+        INSERT INTO PizzaMenu (name, price, description, imagePath)
+        VALUES (#{name}, #{price}, #{description}, #{imagePath})
     </insert>
 
     <update id="updatePizza">
-        UPDATE PizzaMenu SET name = #{name}, price = #{price}, description = #{description} WHERE id = #{id}
+        UPDATE PizzaMenu SET name = #{name}, price = #{price}, description = #{description}, imagePath = #{imagePath} WHERE id = #{id}
     </update>
 
     <delete id="deletePizza">
