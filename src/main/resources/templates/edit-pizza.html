@@ -14,7 +14,7 @@
         <p>
             <strong>이미지 : </strong>
             <input type="file" id="image" name="image" accept="image/*">
-            <!-- (선택) 이미지 미리보기 -->
+
             <img id="preview-img" src="" alt="이미지 미리보기"
                  style="max-width: 150px; display: none;">
         </p>
@@ -39,12 +39,10 @@
         const urlParams = new URLSearchParams(window.location.search);
         const id = urlParams.get('id');
 
-        // 1) 기존 피자 정보 로드
         $.ajax({
             url: "/api/pizzas/" + id,
             method: "GET",
             success: function(pizza) {
-                // 기존 이미지 미리보기 (로컬 경로/S3 경로 등)
                 if (pizza.imagePath) {
                     $('#preview-img').attr('src', pizza.imagePath).show();
                 }
@@ -52,15 +50,12 @@
                 $('#pizza-price').val(pizza.price);
                 $('#pizza-description').val(pizza.description);
             },
-            error: function(xhr, status, error) {
+            error: function() {
                 alert("피자 정보를 불러올 수 없습니다.");
-                console.error("GET /api/pizzas/{id} error:", xhr, status, error);
-                // 불러오기 실패 시 목록으로 이동
                 window.location.href = "/pizzas";
             }
         });
 
-        // 2) 수정 폼 전송 시 PUT 요청
         $('#edit-pizza-form').submit(function(event) {
             event.preventDefault();
             const formData = new FormData(this);

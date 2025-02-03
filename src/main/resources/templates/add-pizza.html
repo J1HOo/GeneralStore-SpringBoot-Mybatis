@@ -47,9 +47,8 @@
                     alert("피자가 추가되었습니다.");
                     window.location.href = "/pizzas";
                 },
-                error: function(xhr, status, error) {
+                error: function() {
                     alert("피자를 추가하는 데 실패했습니다.");
-                    console.error("POST /api/pizzas error:", xhr, status, error, xhr.responseText);
                 }
             });
         });
