@@ -15,7 +15,7 @@
             <strong>이미지 : </strong>
             <input type="file" id="image" name="image" accept="image/*">
 
-            <img id="preview-img" src="" alt="이미지 미리보기"
+            <img id="pizza-img" src="" alt="이미지 미리보기"
                  style="max-width: 150px; display: none;">
         </p>
         <p>
@@ -46,9 +46,9 @@
             method: "GET",
             success: function(pizza) {
                 if (pizza.imagePath) {
-                    $('#preview-img').attr('src', pizza.imagePath).show();
+                    $('#pizza-img').attr('src', pizza.imagePath).show();
                 } else {
-                    $('#preview-img').attr('src', "/images/default-pizza.png").show();
+                    $('#pizza-img').attr('src', "/images/default-pizza.png").show();
                 }
                 $('#pizza-name').val(pizza.name);
                 $('#pizza-price').val(pizza.price);
@@ -84,6 +84,17 @@
     $('#editCancel').click(function() {
         if (confirm("수정을 취소 하시겠습니까?")) {
             window.location.href = "/pizzas";
+        }
+    });
+
+    $('#image').change(function() {
+        const file = this.files[0];
+        if (file) {
+        const reader = new FileReader();
+        reader.onload = function() {
+            $('#pizza-img').attr('src', reader.result).show();
+            };
+            reader.readAsDataURL(file);
         }
     });
 </script>

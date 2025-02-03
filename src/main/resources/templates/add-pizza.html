@@ -14,6 +14,9 @@
         <p>
             <strong>이미지 : </strong>
             <input type="file" id="image" name="image" accept="image/*">
+
+            <img id="pizza-img" src="" alt="이미지 미리보기"
+                 style="max-width: 150px; display: none;">
         </p>
         <p>
             <strong>이름 : </strong>
@@ -52,6 +55,17 @@
                 }
             });
         });
+    });
+
+    $('#image').change(function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                $('#pizza-img').attr('src', reader.result).show();
+            };
+            reader.readAsDataURL(file);
+        }
     });
 </script>
 </body>

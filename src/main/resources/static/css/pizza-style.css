@@ -1,13 +1,21 @@
-.container {
-    width: 80%;
-    margin: 0 auto;
-    font-family: Arial, sans-serif;
+body {
+    margin: 0;
+    padding: 0;
 }
 
-h1 {
+.container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+
     text-align: center;
+}
+
+
+h1 {
     color: #333;
 }
+
 
 table {
     width: 100%;
@@ -18,21 +26,92 @@ table {
 th, td {
     border: 1px solid #ddd;
     text-align: center;
-    padding: 8px;
+    padding: 10px;
 }
 
 th {
-    background-color: #f4f4f4;
-}
-
-button {
     background-color: #4CAF50;
     color: white;
+}
+
+
+img {
+    width: 50px;
+    height: auto;
+    border-radius: 5px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 8px 12px;
+    margin: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    color: white;
+    background-color: #4CAF50;
+    border-radius: 5px;
     border: none;
-    padding: 5px 10px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #45a049;
+.btn:hover {
+    opacity: 0.8;
+}
+
+.btn-danger {
+    background-color: #d9534f;
+}
+
+.btn-danger:hover {
+    background-color: #c9302c;
+}
+
+
+#pizza-detail {
+    margin-top: 20px;
+}
+
+#pizza-detail img {
+    width: 500px;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+p {
+    font-size: 18px;
+}
+
+
+.buttons {
+    margin-top: 20px;
+}
+
+
+@media screen and (max-width: 768px) {
+    .container {
+        width: 90%;
+    }
+
+    table {
+        font-size: 14px;
+    }
+
+    .btn {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    img {
+        width: 40px;
+    }
+}
+
+#pizza-image {
+display: flex;
+justify-content: center;
+align-items: center;
 }

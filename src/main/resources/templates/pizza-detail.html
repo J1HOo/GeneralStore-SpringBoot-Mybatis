@@ -68,5 +68,16 @@
             }
         });
     });
+
+    $('#image').change(function() {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function() {
+                $('#pizza-img').attr('src', reader.result).show();
+            };
+            reader.readAsDataURL(file);
+        }
+    });
 </script>
 </html>
