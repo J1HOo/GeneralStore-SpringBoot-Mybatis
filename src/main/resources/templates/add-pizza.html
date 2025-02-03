@@ -8,6 +8,41 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 <body>
-
+<div class="container">
+    <h1>피자 추가</h1>
+    <form id="add-pizza-form" enctype="multipart/form-data">
+        <label for="name">이름:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="price">가격:</label>
+        <input type="number" id="price" name="price" required>
+        <br>
+        <label for="description">설명:</label>
+        <textarea id="description" name="description"></textarea>
+        <br>
+        <label for="image">이미지:</label>
+        <input type="file" id="image" name="image" accept="image/*">
+        <br>
+        <button type="submit">추가</button>
+    </form>
+</div>
 </body>
+
+<script>
+    $('#add-pizza-form').submit(function(event){
+        event.preventDefault();
+        const formData = new FormData(this);
+        $.ajax({
+            url: "/api/pizzas",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(data){
+                alert("피자가 추가되었습니다.");
+                window.location.href = "/pizzas";
+            }
+        });
+    });
+</script>
 </html>

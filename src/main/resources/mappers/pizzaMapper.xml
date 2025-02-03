@@ -6,4 +6,20 @@
     <select id="selectAll">
         SELECT * FROM PizzaMenu
     </select>
+
+    <select id="selectById">
+        SELECT * FROM PizzaMenu WHERE id = #{id}
+    </select>
+
+    <insert id="insertPizza" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO PizzaMenu (name, price, description) VALUES (#{name}, #{price}, #{description})
+    </insert>
+
+    <update id="updatePizza">
+        UPDATE PizzaMenu SET name = #{name}, price = #{price}, description = #{description} WHERE id = #{id}
+    </update>
+
+    <delete id="deletePizza">
+        DELETE FROM PizzaMenu WHERE id = #{id}
+    </delete>
 </mapper>
