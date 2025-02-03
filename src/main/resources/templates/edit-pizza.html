@@ -31,6 +31,8 @@
             <input type="text" id="pizza-description" name="description">
         </p>
         <button type="submit">수정</button>
+        <a href="/pizzas">목록</a>
+        <button type="button" id="editCancel">수정 취소</button>
     </form>
 </div>
 
@@ -45,6 +47,8 @@
             success: function(pizza) {
                 if (pizza.imagePath) {
                     $('#preview-img').attr('src', pizza.imagePath).show();
+                } else {
+                    $('#preview-img').attr('src', "/images/default-pizza.png").show();
                 }
                 $('#pizza-name').val(pizza.name);
                 $('#pizza-price').val(pizza.price);
@@ -70,12 +74,17 @@
                     alert("피자가 수정되었습니다.");
                     window.location.href = "/pizzas";
                 },
-                error: function(xhr, status, error) {
+                error: function() {
                     alert("피자를 수정하는 데 실패했습니다.");
-                    console.error("PUT /api/pizzas/{id} error:", xhr, status, error, xhr.responseText);
                 }
             });
         });
+    });
+
+    $('#editCancel').click(function() {
+        if (confirm("수정을 취소 하시겠습니까?")) {
+            window.location.href = "/pizzas";
+        }
     });
 </script>
 </body>

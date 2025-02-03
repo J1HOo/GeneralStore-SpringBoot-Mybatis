@@ -58,11 +58,11 @@
         $.ajax({
             url: '/api/pizzas/' + id,
             method: 'delete',
-            success: function (data) {
+            success: function () {
                 alert("메뉴가 삭제되었습니다.");
                 location.reload();
             },
-            error: function (data) {
+            error: function () {
                 alert("메뉴를 삭제할 수 없습니다.");
             }
         })

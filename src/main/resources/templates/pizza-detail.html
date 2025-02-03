@@ -11,7 +11,7 @@
 <div class="container">
     <h1>피자 상세보기</h1>
     <div id="pizza-detail">
-        <img src="/images/default-pizza.png" class="pizza-img" alt="pizza-image" id="pizza-image">
+        <img id="pizza-img" src="" style="max-width: 150px; display: none;">
         <p><strong>이름 : </strong> <span id="pizza-name"></span> </p>
         <p><strong>가격 : </strong> <span id="pizza-price"></span> </p>
         <p><strong>설명 : </strong> <span id="pizza-description"></span> </p>
@@ -38,7 +38,8 @@
                     method: 'delete',
                     success: function (data) {
                         alert("메뉴가 삭제되었습니다.");
-                        window.location.href = "/pizzas";
+                        return
+                        location.reload();
                     },
                     error: function (data) {
                         alert("메뉴를 삭제할 수 없습니다.");
@@ -52,6 +53,11 @@
             url: `/api/pizzas/${id}`,
             method: "GET",
             success: function(pizza) {
+                if (pizza.imagePath) {
+                    $('#pizza-img').attr('src', pizza.imagePath).show();
+                } else {
+                    $('#pizza-img').attr('src', "/images/default-pizza.png").show();
+                }
                 $('#pizza-name').text(pizza.name);
                 $('#pizza-price').text(pizza.price);
                 $('#pizza-description').text(pizza.description);
