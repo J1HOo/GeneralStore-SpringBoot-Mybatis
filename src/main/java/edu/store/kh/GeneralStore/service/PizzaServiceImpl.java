@@ -16,19 +16,32 @@ public class PizzaServiceImpl implements PizzaService {
     @Autowired
     private PizzaMapper pizzaMapper;
 
+    // 이미지 저장 경로
     private final String uploadDir = "/Users/parkjiho/Workspace/pizza-image-path/";
 
     private String saveImage(MultipartFile image) throws IOException {
+
+        // 이미지가 없으면 기본 이미지로 대체
         if (image == null || image.isEmpty()) {
             return "/images/default-pizza.png";
         }
 
-        String originalFilename = image.getOriginalFilename();
-        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String filename = System.currentTimeMillis() + extension;
+//        // 파일명: UUID + 원본파일명
+//        String uuid = UUID.randomUUID().toString(); // 예: "a1b2c3"
+//        String originalFilename = image.getOriginalFilename(); // 예: "abc.png"
+//        String storedFilename = uuid + "_" + originalFilename; // 예: "a1b2c3_abc.png"
 
+        // 파일명: 현재시간 + 확장자
+        String originalFilename = image.getOriginalFilename(); // 예: "abc.png"
+        String fileExtension = originalFilename.substring(originalFilename.lastIndexOf(".")); // 예: ".png"
+        String filename = System.currentTimeMillis() + fileExtension; // 예: "1234567890.png"
+
+        // 파일 저장
         File dest = new File(uploadDir, filename);
+
+        // 파일이 저장될 디렉토리가 없으면 생성
         dest.getParentFile().mkdirs();
+
         image.transferTo(dest);
         return "/pizza-image/" + filename;
     }
@@ -59,8 +72,12 @@ public class PizzaServiceImpl implements PizzaService {
         pizza.setPrice(price);
         pizza.setDescription(description);
 
+        // 이미지가 있으면 이미지 경로를 업데이트
         if (image != null && !image.isEmpty()) {
             pizza.setImagePath(saveImage(image));
+        }else {
+            // 이미지가 없으면 기본 이미지로 대체
+            pizza.setImagePath("/images/default-pizza.png");
         }
         return pizzaMapper.updatePizza(pizza);
     }
