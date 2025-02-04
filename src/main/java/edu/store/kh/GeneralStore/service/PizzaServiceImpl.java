@@ -4,46 +4,81 @@ import edu.store.kh.GeneralStore.dto.Pizza;
 import edu.store.kh.GeneralStore.mapper.PizzaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Service
 public class PizzaServiceImpl implements PizzaService {
-    @Autowired
-    PizzaMapper pizzaMapper; //서비스 기능에서 필요한 sql구문 mapper 가져와 사용
 
+    @Autowired
+    private PizzaMapper pizzaMapper;
+
+    private final String uploadDir = "/Users/parkjiho/Workspace/pizza-image-path/";
+
+    private String saveImage(MultipartFile image) throws IOException {
+        if (image == null || image.isEmpty()) {
+            return null;
+        }
+
+        String originalFilename = image.getOriginalFilename();
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        String filename = System.currentTimeMillis() + extension;
+
+        File dest = new File(uploadDir, filename);
+        dest.getParentFile().mkdirs();
+        image.transferTo(dest);
+        return "/pizza-image/" + filename;
+    }
 
     @Override
     public List<Pizza> selectAll() {
-        // 피자 메뉴를 모두 목록 형태로 가져오기
         return pizzaMapper.selectAll();
     }
 
     @Override
     public Pizza selectById(int id) {
-        // 선택한 id 값으로 피자 메뉴 1가지를 선택해서 상세 조회
         return pizzaMapper.selectById(id);
+    }
+
+    public int insertPizza(String name, int price, String description, MultipartFile image) throws IOException {
+        Pizza pizza = new Pizza();
+        pizza.setName(name);
+        pizza.setPrice(price);
+        pizza.setDescription(description);
+        pizza.setImagePath(saveImage(image));
+        return pizzaMapper.insertPizza(pizza);
+    }
+
+    public int updatePizza(int id, String name, int price, String description, MultipartFile image) throws IOException {
+        Pizza pizza = pizzaMapper.selectById(id);
+        if (pizza == null) {
+            return 0;
+        }
+        pizza.setName(name);
+        pizza.setPrice(price);
+        pizza.setDescription(description);
+
+        if (image != null && !image.isEmpty()) {
+            pizza.setImagePath(saveImage(image));
+        }
+        return pizzaMapper.updatePizza(pizza);
     }
 
     @Override
     public int insertPizza(Pizza pizza) {
-        // 피자메뉴에 피자를 추가할 경우 이미지를 저장할 경로를 설정하여 추가
-
         return pizzaMapper.insertPizza(pizza);
     }
 
     @Override
     public int updatePizza(Pizza pizza) {
-        // 피자 메뉴에 피자를 추가할 경우 이미지 저장할 경로를 설정하여 추가
-        // 기존에 저장된 이미지 삭제 또는 보존
         return pizzaMapper.updatePizza(pizza);
     }
 
-
-
     @Override
     public int deletePizza(int id) {
-        // 특정 아이디로 저장된 피자 메뉴 삭제
         return pizzaMapper.deletePizza(id);
     }
 }

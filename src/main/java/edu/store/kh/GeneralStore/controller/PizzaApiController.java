@@ -7,7 +7,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,22 +16,6 @@ public class PizzaApiController {
 
     @Autowired
     private PizzaServiceImpl pizzaService;
-
-    private final String uploadDir = "/Users/parkjiho/Workspace/pizza-image-path/";
-
-    private String saveImage(MultipartFile image) throws IOException {
-        if (image == null || image.isEmpty()) {
-            return null;
-        }
-
-        String originalFilename = image.getOriginalFilename();
-        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-        String filename = System.currentTimeMillis() + extension;
-
-        File dest = new File(uploadDir, filename);
-        image.transferTo(dest);
-        return "/pizza-image/" + filename;
-    }
 
     @GetMapping("/pizzas")
     public List<Pizza> selectAll() {
@@ -51,12 +34,8 @@ public class PizzaApiController {
         @RequestParam(value = "description", required = false) String description,
         @RequestParam(value = "image", required = false) MultipartFile image
     ) throws IOException {
-        Pizza pizza = new Pizza();
-        pizza.setName(name);
-        pizza.setPrice(price);
-        pizza.setDescription(description);
-        pizza.setImagePath(saveImage(image));
-        return pizzaService.insertPizza(pizza);
+
+        return pizzaService.insertPizza(name, price, description, image);
     }
 
     @PutMapping(value = "/pizzas/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -67,14 +46,8 @@ public class PizzaApiController {
         @RequestParam(value = "description", required = false) String description,
         @RequestParam(value = "image", required = false) MultipartFile image
     ) throws IOException {
-        Pizza pizza = pizzaService.selectById(id);
-        pizza.setName(name);
-        pizza.setPrice(price);
-        pizza.setDescription(description);
-        if (image != null && !image.isEmpty()) {
-            pizza.setImagePath(saveImage(image));
-        }
-        return pizzaService.updatePizza(pizza);
+
+        return pizzaService.updatePizza(id, name, price, description, image);
     }
 
     @DeleteMapping("/pizzas/{id}")
