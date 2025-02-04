@@ -20,7 +20,7 @@ public class PizzaServiceImpl implements PizzaService {
 
     private String saveImage(MultipartFile image) throws IOException {
         if (image == null || image.isEmpty()) {
-            return null;
+            return "/images/default-pizza.png";
         }
 
         String originalFilename = image.getOriginalFilename();
@@ -54,9 +54,7 @@ public class PizzaServiceImpl implements PizzaService {
 
     public int updatePizza(int id, String name, int price, String description, MultipartFile image) throws IOException {
         Pizza pizza = pizzaMapper.selectById(id);
-        if (pizza == null) {
-            return 0;
-        }
+
         pizza.setName(name);
         pizza.setPrice(price);
         pizza.setDescription(description);
