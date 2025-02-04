@@ -11,6 +11,23 @@
 <body>
     <div class="container">
         <a href="/pizzas">피자 메뉴 보기</a>
+        <img src="/images/kakao_login_large.png" id="kakaoLogin">
     </div>
 </body>
+
+<script>
+    $("#kakaoLogin").click(function () {
+        $.ajax({
+            url: "/oauth/kakao/login",
+            method: "GET",
+            success: function (data) {
+                console.log("data :", data);
+                window.location.href = data;
+            },
+            error: function () {
+                alert("카카오 로그인에서 Redirect URL 주소를 확인 해주세요.");
+            }
+        });
+    });
+</script>
 </html>
