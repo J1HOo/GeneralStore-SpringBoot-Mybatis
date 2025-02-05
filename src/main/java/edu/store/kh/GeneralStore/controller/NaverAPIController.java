@@ -1,5 +1,6 @@
 package edu.store.kh.GeneralStore.controller;
 
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -35,6 +36,9 @@ public class NaverAPIController {
        private String naverRedirectUrl = "http://localhost:8080/oauth/naver/callback";
     */
 
+
+    // state=xyz123  네이버 state 필수 작성 네이버 기준 형식에 맞추기위해서 작성한 값일뿐
+    // 의미 없음 의미있게 작성하길 원한다면 xyz=123 대신 UUID 나 OAuthStateUtil.generateState() 와 같은 보안 형식 사용가능
     @GetMapping("/login")
     public ResponseEntity<?> getNaverLoginUrl() {
         String url = "https://nid.naver.com/oauth2.0/authorize?response_type=code" +
@@ -83,11 +87,17 @@ public class NaverAPIController {
             }
 
             Map userInfo = userResponse.getBody();
+            System.out.println("🚨 userInfo: " + userInfo);
+
             Map<String, Object> responseData = (Map<String, Object>) userInfo.get("response");
 
 
             String name = (String) responseData.get("name");
+            String nickname = (String) responseData.get("nickname");
             String email = (String) responseData.get("email");
+            String gender = (String) responseData.get("gender");
+            String birthday = (String) responseData.get("birthday");
+            String profileImage = (String) responseData.get("profile_image");
 
             if (name == null || name.isEmpty()) {
                 System.err.println("🚨 name 값이 없습니다! 기본값 설정");
@@ -95,10 +105,11 @@ public class NaverAPIController {
             }
             if (email == null) email = "이메일 없음";
 
-
+            // gender 데이터를 frontend 로 전달할 때 f -> female 변형해서 전달
             String encodedName = URLEncoder.encode(name, StandardCharsets.UTF_8);
+            String encodedNickname = URLEncoder.encode(nickname, StandardCharsets.UTF_8);
 
-            return "redirect:/naversignup?name=" + encodedName + "&email=" + email ;
+            return "redirect:/signup/naver?name=" + encodedName + "&email=" + email +"&nickname="+encodedNickname + "&gender="+gender+"&birthday="+birthday+"&profileImage="+profileImage ;
 
         } catch (Exception e) {
             System.err.println("🚨 네이버 로그인 처리 중 오류 발생: " + e.getMessage());

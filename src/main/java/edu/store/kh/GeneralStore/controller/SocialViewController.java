@@ -17,11 +17,11 @@ public class SocialViewController {
 //        return "login/kakao";
 //    }
 //
-//    // 네이버 회원가입 페이지
-//    @GetMapping("/signup/naver")
-//    public String naverSignup() {
-//        return "signup/naver";
-//    }
+    // 네이버 회원가입 페이지
+    @GetMapping("/signup/naver")
+    public String naverSignup() {
+        return "signup/naver";
+    }
 //
 //    // 네이버 로그인 페이지
 //    @GetMapping("login/naver")
