@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -15,8 +16,8 @@ public class Cafe {
     private String name;
     private String address;
     private String phoneNumber;
-    private Time openingTime;
-    private Time closingTime;
+    private LocalTime openingTime;
+    private LocalTime closingTime;
     private String description;
     private Timestamp createdAt;
     private Timestamp updatedAt;
