@@ -25,7 +25,7 @@ public class UserAPIController {
 
         if (loginUser != null) {
             session.setAttribute("loginUser", loginUser); // 로그인 성공시 세션에 로그인 정보 저장
-            response.put("status", "success"); // 로그인 성공시 success 제공
+            response.put("status", "success");
             response.put("user", loginUser); // 로그인 성공시 유저 정보 제공
             return ResponseEntity.ok(response); // 로그인 성공시 200 제공
         } else {
@@ -36,21 +36,36 @@ public class UserAPIController {
     }
 
     // 로그아웃
-    @GetMapping("/logout")
-    public void logout() {
-        // 로그아웃 기능은 클라이언트에서 처리하므로 서버에서는 아무런 처리를 하지 않는다.
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, Object>> logout(HttpSession session) {
+        session.invalidate(); // 세션 무효화
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "success");
+        return ResponseEntity.ok(response); // 로그아웃 성공시 200 제공
     }
 
-    // 로그인 상태 확인
-    @GetMapping("/loginCheck")
-    public User loginCheck() {
-        // 로그인 상태 확인은 클라이언트에서 처리하므로 서버에서는 아무런 처리를 하지 않는다.
-        return null;
+    // 로그인 상태 확인 -> DB를 거치지 않고 오직 세션에서만 정보가 존재하는지 확인
+    @GetMapping("/checkLogin")
+    public ResponseEntity<?> checkLogin(HttpSession session) {
+        User loginUser = (User) session.getAttribute("user");
+        if (loginUser != null) {
+            return ResponseEntity.ok(loginUser);
+        } else {
+            return ResponseEntity.status(401).body(Map.of("message", "로그인 상태가 아닙니다."));
+        }
+
     }
 
-    // 특정 유저 정보 조회 마이페이지
-    @GetMapping("/mypage/{userId}")
-    public User mypage(@PathVariable String userId) {
-        return userService.findUserById(userId);
+    // 특정 유저 정보 조회 -> mypage
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> findUserById(@PathVariable("userId") String userId) {
+        User user = userService.findUserById(userId);
+
+        if (user != null) {
+            return ResponseEntity.ok(user);
+        } else {
+            return ResponseEntity.status(404).body(Map.of("message", "로그인 상태가 아닙니다."));
+        }
     }
+
 }
