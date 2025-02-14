@@ -4,14 +4,14 @@
 <mapper namespace="edu.store.kh.GeneralStore.mapper.UserMapper">
 
     <!-- 유저 정보 조회 -->
-    <select id="">
+    <select id="selectUserById">
         SELECT *
         FROM users
         WHERE user_id = #{userId}
     </select>
 
     <!-- 로그인 확인 -->
-    <select id="">
+    <select id="loginUser">
         SELECT *
         FROM users
         WHERE user_id = #{userId} AND password = #{password}
