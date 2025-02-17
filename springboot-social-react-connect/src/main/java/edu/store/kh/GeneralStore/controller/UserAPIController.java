@@ -18,6 +18,7 @@ public class UserAPIController {
     private UserService userService;
 
 
+    @PostMapping("/login")
     public ResponseEntity<Map<String , Object>> loginUser(@RequestBody User user, HttpSession session) {
         User loginUser = userService.loginUser(user.getUserId(), user.getPassword());
 
