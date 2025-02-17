@@ -39,8 +39,9 @@ public class UserAPIController {
         session.invalidate();
         Map<String, Object> response = new HashMap<>();
         response.put("status", "logout");
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(response); // 성공적으로 로그아웃이 됐다면 200
     }
+    // 로그인 상태 확인 -> DB를 거치지 않고 오직 세션에서만 정보가 존재하는지 확인
     @GetMapping("/checkLogin")
     public ResponseEntity<?> checkLogin(HttpSession session) {
         User loginUser = (User) session.getAttribute("user");
@@ -51,7 +52,7 @@ public class UserAPIController {
         }
 
     }
-
+    // 특정 유저 정보 조회 -> mypage
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable("userId") String userId) {
         User user = userService.getUserById(userId);
