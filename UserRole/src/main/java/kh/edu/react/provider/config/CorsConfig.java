@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+
+// 리액트 300 포트와 연결을 주고 받을 때 어디까지 springboot 서버에서 제공되는 값을 사용할 수 있는지 설정
+// !!! Controller 에서 @CrossOrigin(origins = "http://localhost:3000") 설정을 하지 않아도 된다.
 @Configuration
 public class CorsConfig {
     @Bean
