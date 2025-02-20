@@ -4,8 +4,10 @@ import kh.edu.react.provider.dto.User;
 import kh.edu.react.provider.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -15,7 +17,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(String userId) {
-        return userMapper.getUserById(userId);
+        User user = userMapper.getUserById(userId);
+
+        System.out.println("user: " + user);
+        return user;
     }
 
     /*
@@ -38,6 +43,8 @@ public class UserServiceImpl implements UserService {
     * Map<Integer, Integer> = 숫자 - 숫자 만 가능
     *                       예)  1 - 56789
     * */
+
+
     @Override
     public Map<String, Object> loginUser(String userId, String userPassword) {
         User loggedInUser = userMapper.loginUser(userId, userPassword);
@@ -52,5 +59,10 @@ public class UserServiceImpl implements UserService {
             result.put("message", "아이디 또는 비밀번호가 올바르지 않습니다.");
         }
         return result;
+    }
+
+    @Override
+    public List<User> findUserByName(@RequestParam String userName) {
+        return userMapper.findUserByName(userName);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/api/user")
@@ -63,4 +64,16 @@ public class UserAPIController {
             return ResponseEntity.status(404).body(Map.of("message", "로그인 상태가 아닙니다."));
         }
     }
+
+    // 유저 이름으로 유저 정보 가져오기
+    @GetMapping("/search")
+    public ResponseEntity<?> findUserByName(@RequestParam String userName) {
+        List<User> users = userService.findUserByName(userName);
+        if (users != null) {
+            return ResponseEntity.ok(users);
+        } else {
+            return ResponseEntity.status(404).body(Map.of("message", "검색 결과가 없습니다."));
+        }
+    }
+
 }
