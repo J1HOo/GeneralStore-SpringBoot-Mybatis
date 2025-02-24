@@ -1,3 +1,4 @@
+
 package kh.edu.react.provider.service;
 
 import kh.edu.react.provider.dto.User;
@@ -15,6 +16,7 @@ public interface UserService {
     // 로그인한 유저 정보 가져오기
     Map<String, Object> loginUser(String userId, String userPassword);
 
-    // 유저 이름으로 유저 정보 가져오기
+
+    // 유저 이름으로 조회되는 유저 검색하기
     List<User> findUserByName(String userName);
 }

@@ -4,7 +4,6 @@ import kh.edu.react.provider.dto.User;
 import kh.edu.react.provider.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -17,9 +16,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(String userId) {
+
         User user = userMapper.getUserById(userId);
 
-        System.out.println("user: " + user);
+        System.out.println("=============== SERVICE =============== ");
+        System.out.println(user);
         return user;
     }
 
@@ -43,26 +44,29 @@ public class UserServiceImpl implements UserService {
     * Map<Integer, Integer> = 숫자 - 숫자 만 가능
     *                       예)  1 - 56789
     * */
-
-
     @Override
     public Map<String, Object> loginUser(String userId, String userPassword) {
         User loggedInUser = userMapper.loginUser(userId, userPassword);
+        System.out.println(loggedInUser);
         Map<String, Object> result = new HashMap<String, Object>();
 
         if (loggedInUser != null) {
             result.put("status", "success");
             result.put("user", loggedInUser);
+
             result.put("redirect", "/");
+
+            // 유저 롤에 따라 페이지 설정 기업페이지 유저페이지 관리자페이지로 이동 설정
         } else {
             result.put("status", "fail");
             result.put("message", "아이디 또는 비밀번호가 올바르지 않습니다.");
         }
+        System.out.println("result : " + result);
         return result;
     }
 
     @Override
-    public List<User> findUserByName(@RequestParam String userName) {
+    public List<User> findUserByName(String userName) {
         return userMapper.findUserByName(userName);
     }
 }

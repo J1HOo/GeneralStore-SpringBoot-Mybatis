@@ -15,8 +15,9 @@
         SELECT *
         FROM userrole
         WHERE user_id = #{userId}
-        AND user_password = #{userPassword}
+          AND user_password = #{userPassword}
     </select>
+
 
     <!-- 유저 이름으로 검색 -->
     <select id="findUserByName">
@@ -24,8 +25,4 @@
         FROM userrole
         WHERE user_name = #{userName}
     </select>
-
-
-
-
 </mapper>
